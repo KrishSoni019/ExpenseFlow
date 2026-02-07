@@ -79,15 +79,11 @@ function setupFormHandlers() {
 
 // Handle login form submission
 function handleLoginSubmit(e) {
-  e.preventDefault();
 
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
 
-  // Clear previous errors
   clearAllErrors();
-
-  // Validation
   let isValid = true;
 
   if (!email) {
@@ -101,17 +97,14 @@ function handleLoginSubmit(e) {
   if (!password) {
     showFieldError('password', 'Password is required');
     isValid = false;
-  } else if (password.length < 6) {
-    showFieldError('password', 'Password must be at least 6 characters');
-    isValid = false;
   }
 
-  if (isValid) {
-    // Simulate successful login
-    console.log('[v0] Login attempt:', { email, password });
-    submitForm(e.target, 'Signing in...');
+  // ❗ Only stop submission if invalid
+  if (!isValid) {
+    e.preventDefault();
   }
 }
+
 
 // Handle signup form submission
 function handleSignupSubmit(e) {

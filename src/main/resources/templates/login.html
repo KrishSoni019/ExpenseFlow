@@ -37,8 +37,11 @@
           <p class="auth-subtitle">Sign in to your ExpenseFlow account</p>
         </div>
 
-        <form class="auth-form" id="loginForm">
-          <!-- Email Field -->
+        <p style="color:red;" th:text="${error}"></p>
+
+        <form class="auth-form" id="loginForm" action="/login" method="post">
+
+        <!-- Email Field -->
           <div class="form-group">
             <label for="email" class="form-label">Email Address</label>
             <input
