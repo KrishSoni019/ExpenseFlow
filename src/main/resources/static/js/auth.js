@@ -167,10 +167,10 @@ function handleSignupSubmit(e) {
   }
 
   if (isValid) {
-    // Simulate successful signup
-    console.log('[v0] Signup attempt:', { fullname, email, password });
-    submitForm(e.target, 'Creating account...');
+    console.log('[v0] Signup attempt:', { fullname, email });
+    e.target.submit();   // ✅ THIS sends POST /signup to Spring Boot
   }
+
 }
 
 // Show field error
