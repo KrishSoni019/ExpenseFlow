@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account - ExpenseFlow</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+  <div class="main-container">
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="navbar-content">
+        <div class="navbar-logo">
+          <div class="logo-pulse"></div>
+          <span>ExpenseFlow</span>
+        </div>
+        <div class="navbar-links">
+          <a href="index.html" class="nav-link">Back to Home</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Auth Container -->
+    <div class="auth-container">
+      <div class="auth-background">
+        <div class="particles-container" id="particles"></div>
+        <div class="gradient-orb-left"></div>
+        <div class="gradient-orb-right"></div>
+      </div>
+
+      <!-- Sign Up Card -->
+      <div class="auth-card animate-slide-up">
+        <div class="auth-header">
+          <h1 class="auth-title">Create Your Account</h1>
+          <p class="auth-subtitle">Join thousands managing their finances smarter</p>
+        </div>
+
+        <form class="auth-form" id="signupForm">
+          <!-- Full Name Field -->
+          <div class="form-group">
+            <label for="fullname" class="form-label">Full Name</label>
+            <input
+              type="text"
+              id="fullname"
+              name="fullname"
+              class="form-input"
+              placeholder="Krish Soni"
+              required
+            >
+            <span class="form-error" id="fullnameError"></span>
+          </div>
+
+          <!-- Email Field -->
+          <div class="form-group">
+            <label for="email" class="form-label">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-input"
+              placeholder="you@example.com"
+              required
+            >
+            <span class="form-error" id="emailError"></span>
+          </div>
+
+          <!-- Password Field -->
+          <div class="form-group">
+            <label for="password" class="form-label">Password</label>
+            <div class="password-wrapper">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-input"
+                placeholder="••••••••"
+                required
+              >
+              <button type="button" class="password-toggle" id="passwordToggle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+            <span class="form-error" id="passwordError"></span>
+          </div>
+
+          <!-- Confirm Password Field -->
+          <div class="form-group">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <div class="password-wrapper">
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                class="form-input"
+                placeholder="••••••••"
+                required
+              >
+              <button type="button" class="password-toggle" id="confirmPasswordToggle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+            <span class="form-error" id="confirmPasswordError"></span>
+          </div>
+
+          <!-- Terms Checkbox -->
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input
+                type="checkbox"
+                id="terms"
+                name="terms"
+                class="checkbox-input"
+                required
+              >
+              <span class="checkbox-text">I agree to the <a href="#" class="link">Terms of Service</a> and <a href="#" class="link">Privacy Policy</a></span>
+            </label>
+            <span class="form-error" id="termsError"></span>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-primary btn-lg btn-full">
+            Create Account
+            <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="5 12 19 12"></polyline>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+
+          <!-- Divider -->
+          <div class="form-divider">
+            <span>Already have an account?</span>
+          </div>
+
+          <!-- Sign In Link -->
+          <a href="login.html" class="btn btn-secondary btn-lg btn-full">
+            Sign In
+            <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="5 12 19 12"></polyline>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="auth.js"></script>
+</body>
+</html>
