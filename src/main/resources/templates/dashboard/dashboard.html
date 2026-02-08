@@ -1,12 +1,369 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>User Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ExpenseFlow</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+
 </head>
 <body>
-<h1>Welcome to your dashboard</h1>
-<p>You are logged in 🎉</p>
+<div class="dashboard-container">
+    <!-- Floating Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <div class="header-logo">
+                <div class="logo-pulse"></div>
+                <span>ExpenseFlow</span>
+            </div>
 
-<a href="/logout">Logout</a>
+            <div class="header-month">
+                <button class="month-nav" id="prevMonth">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+                <span class="month-display" id="monthDisplay">February 2026</span>
+                <button class="month-nav" id="nextMonth">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="header-profile">
+                <button class="profile-avatar" id="profileBtn">
+                    <span class="avatar-initial">JD</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <!-- Hero Metric -->
+        <section class="hero-metric">
+            <div class="metric-card">
+                <div class="metric-label">Total Spent This Month</div>
+                <div class="metric-amount">
+                    <span class="currency">₹</span>
+                    <span class="amount" id="totalAmount">18,400</span>
+                </div>
+                <div class="metric-comparison">
+                    <span class="comparison-up">↑ 12% vs last month</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Overview -->
+        <section class="category-overview">
+            <div class="section-header">
+                <h2>Category-wise Breakdown</h2>
+            </div>
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="category-header">
+                        <div class="category-info">
+                            <span class="category-name">Food & Dining</span>
+                            <span class="category-amount">₹4,200</span>
+                        </div>
+                        <span class="category-percent">23%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 23%; background: linear-gradient(90deg, #f59e0b, #fbbf24);"></div>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-header">
+                        <div class="category-info">
+                            <span class="category-name">Travel</span>
+                            <span class="category-amount">₹5,100</span>
+                        </div>
+                        <span class="category-percent">28%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 28%; background: linear-gradient(90deg, #8b5cf6, #a78bfa);"></div>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-header">
+                        <div class="category-info">
+                            <span class="category-name">Rent</span>
+                            <span class="category-amount">₹8,000</span>
+                        </div>
+                        <span class="category-percent">43%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 43%; background: linear-gradient(90deg, #06b6d4, #22d3ee);"></div>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-header">
+                        <div class="category-info">
+                            <span class="category-name">Entertainment</span>
+                            <span class="category-amount">₹1,100</span>
+                        </div>
+                        <span class="category-percent">6%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 6%; background: linear-gradient(90deg, #ec4899, #f472b6);"></div>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-header">
+                        <div class="category-info">
+                            <span class="category-name">Shopping</span>
+                            <span class="category-amount">₹2,400</span>
+                        </div>
+                        <span class="category-percent">13%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 13%; background: linear-gradient(90deg, #10b981, #34d399);"></div>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-header">
+                        <div class="category-info">
+                            <span class="category-name">Utilities</span>
+                            <span class="category-amount">₹-3,400</span>
+                        </div>
+                        <span class="category-percent">-18%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 18%; background: linear-gradient(90deg, #6366f1, #818cf8);"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="dashboard-grid">
+            <!-- Recent Expenses -->
+            <section class="recent-expenses">
+                <div class="section-header">
+                    <h2>Recent Expenses</h2>
+                </div>
+                <div class="expenses-list">
+                    <div class="expense-item">
+                        <div class="expense-icon food-icon">🍽️</div>
+                        <div class="expense-details">
+                            <div class="expense-name">Restaurant Lunch</div>
+                            <div class="expense-meta">
+                                <span class="payment-type">UPI</span>
+                                <span class="expense-date">Today</span>
+                            </div>
+                        </div>
+                        <div class="expense-amount">₹450</div>
+                    </div>
+
+                    <div class="expense-item">
+                        <div class="expense-icon travel-icon">🚗</div>
+                        <div class="expense-details">
+                            <div class="expense-name">Cab Ride</div>
+                            <div class="expense-meta">
+                                <span class="payment-type">Card</span>
+                                <span class="expense-date">Feb 6</span>
+                            </div>
+                        </div>
+                        <div class="expense-amount">₹320</div>
+                    </div>
+
+                    <div class="expense-item">
+                        <div class="expense-icon shopping-icon">🛍️</div>
+                        <div class="expense-details">
+                            <div class="expense-name">Grocery Shopping</div>
+                            <div class="expense-meta">
+                                <span class="payment-type">Cash</span>
+                                <span class="expense-date">Feb 5</span>
+                            </div>
+                        </div>
+                        <div class="expense-amount">₹1,200</div>
+                    </div>
+
+                    <div class="expense-item">
+                        <div class="expense-icon entertainment-icon">🎬</div>
+                        <div class="expense-details">
+                            <div class="expense-name">Movie Tickets</div>
+                            <div class="expense-meta">
+                                <span class="payment-type">Card</span>
+                                <span class="expense-date">Feb 4</span>
+                            </div>
+                        </div>
+                        <div class="expense-amount">₹600</div>
+                    </div>
+
+                    <div class="expense-item">
+                        <div class="expense-icon utilities-icon">💡</div>
+                        <div class="expense-details">
+                            <div class="expense-name">Electricity Bill</div>
+                            <div class="expense-meta">
+                                <span class="payment-type">Online</span>
+                                <span class="expense-date">Feb 1</span>
+                            </div>
+                        </div>
+                        <div class="expense-amount">₹1,800</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Budget Status -->
+            <section class="budget-status">
+                <div class="section-header">
+                    <h2>Budget Status</h2>
+                </div>
+                <div class="budget-card">
+                    <div class="budget-info">
+                        <div class="budget-text">
+                            <span class="budget-label">Budget</span>
+                            <span class="budget-value">₹20,000</span>
+                        </div>
+                        <div class="budget-text">
+                            <span class="budget-label">Spent</span>
+                            <span class="budget-value spent">₹18,400</span>
+                        </div>
+                        <div class="budget-text">
+                            <span class="budget-label">Remaining</span>
+                            <span class="budget-value remaining">₹1,600</span>
+                        </div>
+                    </div>
+                    <div class="budget-progress">
+                        <div class="progress-bar-large">
+                            <div class="progress-fill-large" style="width: 92%;"></div>
+                        </div>
+                        <div class="progress-label">92% of Budget Used</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Floating Add Button -->
+    <button class="fab-button" id="addExpenseBtn" title="Add Expense">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="12 5 12 19"></polyline>
+            <polyline points="5 12 19 12"></polyline>
+        </svg>
+    </button>
+
+    <!-- Add Expense Modal -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="add-expense-modal" id="addExpenseModal">
+        <div class="modal-header">
+            <h3>Add Expense</h3>
+            <button class="modal-close" id="closeModal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <form class="expense-form" id="expenseForm">
+            <!-- Amount Input -->
+            <div class="form-group">
+                <label class="form-label">Amount</label>
+                <div class="amount-input-wrapper">
+                    <span class="currency-symbol">₹</span>
+                    <input
+                            type="number"
+                            id="expenseAmount"
+                            class="form-input amount-input"
+                            placeholder="0"
+                            required
+                    >
+                </div>
+            </div>
+
+            <!-- Category Selection -->
+            <div class="form-group">
+                <label class="form-label">Category</label>
+                <div class="category-grid">
+                    <button type="button" class="category-option" data-category="food">
+                        <span class="category-emoji">🍽️</span>
+                        <span>Food</span>
+                    </button>
+                    <button type="button" class="category-option" data-category="travel">
+                        <span class="category-emoji">🚗</span>
+                        <span>Travel</span>
+                    </button>
+                    <button type="button" class="category-option" data-category="shopping">
+                        <span class="category-emoji">🛍️</span>
+                        <span>Shopping</span>
+                    </button>
+                    <button type="button" class="category-option" data-category="entertainment">
+                        <span class="category-emoji">🎬</span>
+                        <span>Entertainment</span>
+                    </button>
+                    <button type="button" class="category-option" data-category="rent">
+                        <span class="category-emoji">🏠</span>
+                        <span>Rent</span>
+                    </button>
+                    <button type="button" class="category-option" data-category="utilities">
+                        <span class="category-emoji">💡</span>
+                        <span>Utilities</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Payment Type -->
+            <div class="form-group">
+                <label class="form-label">Payment Type</label>
+                <div class="payment-pills">
+                    <button type="button" class="payment-pill" data-type="cash">Cash</button>
+                    <button type="button" class="payment-pill" data-type="upi">UPI</button>
+                    <button type="button" class="payment-pill" data-type="card">Card</button>
+                </div>
+            </div>
+
+            <!-- Date Picker -->
+            <div class="form-group">
+                <label class="form-label">Date</label>
+                <input type="date" id="expenseDate" class="form-input" required>
+            </div>
+
+            <!-- Note -->
+            <div class="form-group">
+                <label class="form-label">Note (Optional)</label>
+                <input
+                        type="text"
+                        id="expenseNote"
+                        class="form-input"
+                        placeholder="Add a note..."
+                >
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-save-expense">Save Expense</button>
+        </form>
+    </div>
+
+    <!-- Profile Menu -->
+    <div class="profile-menu" id="profileMenu">
+        <div class="menu-header">
+            <div class="menu-avatar">JD</div>
+            <div class="menu-user-info">
+                <div class="menu-name">John Doe</div>
+                <div class="menu-email">john@example.com</div>
+            </div>
+        </div>
+        <div class="menu-divider"></div>
+        <a href="#" class="menu-item">Profile Settings</a>
+        <a href="#" class="menu-item">Budget Settings</a>
+        <a href="#" class="menu-item">Export Data</a>
+        <div class="menu-divider"></div>
+        <a href="/logout" class="menu-item logout">Logout</a>
+
+    </div>
+</div>
+
+<script src="/js/dashboard.js"></script>
 </body>
 </html>

@@ -35,6 +35,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Controller
@@ -58,7 +59,8 @@ public class AuthController {
     public String login(
             @RequestParam String email,
             @RequestParam String password,
-            Model model
+            Model model,
+            HttpSession session
     ) {
         User user = userRepository.findByEmail(email);
 
@@ -74,8 +76,10 @@ public class AuthController {
             return "login";
         }
 
-        // ✅ success
-        return "redirect:/dashboard";
+        // CREATE SESSION
+        session.setAttribute("loggedInUser", user);
 
+        return "redirect:/dashboard";
     }
+
 }
