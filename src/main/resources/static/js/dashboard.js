@@ -1,36 +1,77 @@
-// Dashboard Functionality
+// ================= DOM READY =================
 document.addEventListener('DOMContentLoaded', () => {
     initializeDashboard();
+    loadDashboardData();
 });
 
+// ================= LOAD DASHBOARD DATA =================
+function loadDashboardData() {
+    const now = new Date();
+    const month = now.getMonth() + 1; // JS months start from 0
+    const year = now.getFullYear();
+
+    fetch(`/api/dashboard?month=${month}&year=${year}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to load dashboard');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Total amount
+            animateCounter('totalAmount', Number(data.totalSpent || 0));
+
+            // Recent expenses
+            const list = document.querySelector('.expenses-list');
+            list.innerHTML = '';
+
+            if (!data.recentExpenses || data.recentExpenses.length === 0) {
+                list.innerHTML = `<p style="opacity:0.6;">No expenses yet</p>`;
+                return;
+            }
+
+            data.recentExpenses.forEach(exp => {
+                const item = document.createElement('div');
+                item.className = 'expense-item';
+                item.innerHTML = `
+                    <div class="expense-details">
+                        <div class="expense-name">${exp.description || 'Expense'}</div>
+                        <div class="expense-meta">
+                            <span class="payment-type">${exp.paymentTypeId}</span>
+                            <span class="expense-date">${exp.expenseDate}</span>
+                        </div>
+                    </div>
+                    <div class="expense-amount">₹${exp.amount}</div>
+                `;
+                list.appendChild(item);
+            });
+        })
+        .catch(err => {
+            console.error(err);
+        });
+}
+
+// ================= DASHBOARD UI =================
 function initializeDashboard() {
-    // Month Navigation
+
+    // ---------- Month Navigation ----------
     const prevMonthBtn = document.getElementById('prevMonth');
     const nextMonthBtn = document.getElementById('nextMonth');
     const monthDisplay = document.getElementById('monthDisplay');
 
-    let currentDate = new Date(2026, 1); // February 2026
+    let currentDate = new Date();
 
     const months = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
+        'January','February','March','April','May','June',
+        'July','August','September','October','November','December'
     ];
 
     function updateMonthDisplay() {
-        const month = months[currentDate.getMonth()];
-        const year = currentDate.getFullYear();
-        monthDisplay.textContent = `${month} ${year}`;
+        monthDisplay.textContent =
+            `${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
     }
+
+    updateMonthDisplay();
 
     prevMonthBtn.addEventListener('click', () => {
         currentDate.setMonth(currentDate.getMonth() - 1);
@@ -42,10 +83,7 @@ function initializeDashboard() {
         updateMonthDisplay();
     });
 
-    // Animate Amount Counter
-    animateCounter('totalAmount', 18400);
-
-    // Profile Menu Toggle
+    // ---------- Profile Menu ----------
     const profileBtn = document.getElementById('profileBtn');
     const profileMenu = document.getElementById('profileMenu');
 
@@ -53,35 +91,24 @@ function initializeDashboard() {
         profileMenu.classList.toggle('active');
     });
 
-    // Close profile menu when clicking outside
     document.addEventListener('click', (e) => {
         if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
             profileMenu.classList.remove('active');
         }
     });
 
-    // Add Expense Modal
+    // ---------- Add Expense Modal ----------
     const addExpenseBtn = document.getElementById('addExpenseBtn');
     const closeModalBtn = document.getElementById('closeModal');
     const modalOverlay = document.getElementById('modalOverlay');
     const addExpenseModal = document.getElementById('addExpenseModal');
     const expenseForm = document.getElementById('expenseForm');
 
-    // Set today's date as default
-    const today = new Date();
-    document.getElementById('expenseDate').valueAsDate = today;
+    document.getElementById('expenseDate').valueAsDate = new Date();
 
-    addExpenseBtn.addEventListener('click', () => {
-        openModal();
-    });
-
-    closeModalBtn.addEventListener('click', () => {
-        closeModal();
-    });
-
-    modalOverlay.addEventListener('click', () => {
-        closeModal();
-    });
+    addExpenseBtn.addEventListener('click', openModal);
+    closeModalBtn.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', closeModal);
 
     function openModal() {
         addExpenseModal.classList.add('active');
@@ -95,42 +122,34 @@ function initializeDashboard() {
         document.body.style.overflow = '';
         expenseForm.reset();
         document.getElementById('expenseDate').valueAsDate = new Date();
-        // Reset active states
-        document.querySelectorAll('.category-option').forEach((btn) => {
-            btn.classList.remove('active');
-        });
-        document.querySelectorAll('.payment-pill').forEach((btn) => {
-            btn.classList.remove('active');
-        });
+
+        document.querySelectorAll('.category-option,.payment-pill')
+            .forEach(btn => btn.classList.remove('active'));
     }
 
-    // Category Selection
-    const categoryOptions = document.querySelectorAll('.category-option');
+    // ---------- Category Selection ----------
     let selectedCategory = null;
-
-    categoryOptions.forEach((option) => {
-        option.addEventListener('click', (e) => {
-            e.preventDefault();
-            categoryOptions.forEach((btn) => btn.classList.remove('active'));
-            option.classList.add('active');
-            selectedCategory = option.dataset.category;
+    document.querySelectorAll('.category-option').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.category-option')
+                .forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedCategory = btn.dataset.category;
         });
     });
 
-    // Payment Type Selection
-    const paymentPills = document.querySelectorAll('.payment-pill');
+    // ---------- Payment Selection ----------
     let selectedPaymentType = null;
-
-    paymentPills.forEach((pill) => {
-        pill.addEventListener('click', (e) => {
-            e.preventDefault();
-            paymentPills.forEach((btn) => btn.classList.remove('active'));
-            pill.classList.add('active');
-            selectedPaymentType = pill.dataset.type;
+    document.querySelectorAll('.payment-pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.payment-pill')
+                .forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedPaymentType = btn.dataset.type;
         });
     });
 
-    // Form Submission
+    // ---------- Submit Expense ----------
     expenseForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -139,107 +158,73 @@ function initializeDashboard() {
         const note = document.getElementById('expenseNote').value;
 
         if (!amount || !selectedCategory || !selectedPaymentType || !date) {
-            alert('Please fill in all required fields');
+            alert('Please fill all required fields');
             return;
         }
 
-        // Log the expense data
-        console.log({
-            amount,
-            category: selectedCategory,
-            paymentType: selectedPaymentType,
-            date,
-            note,
-        });
+        fetch('/api/expenses', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                amount,
+                category: selectedCategory,
+                paymentType: selectedPaymentType,
+                date,
+                note
+            })
+        })
+            .then(res => {
+                if (!res.ok) throw new Error('Save failed');
+                return res.json();
+            })
+            .then(() => {
+                closeModal();
+                showNotification('Expense added successfully!');
+                loadDashboardData();
+            })
+            .catch(err => {
+                alert('Error saving expense');
+                console.error(err);
+            });
 
-        // Close modal and reset form
-        closeModal();
-
-        // Show success message
-        showNotification('Expense added successfully!');
     });
 
-    // Keyboard navigation - Close modal on Escape
+    // ---------- Escape Key ----------
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && addExpenseModal.classList.contains('active')) {
             closeModal();
         }
     });
 
-    // Notification System
+    // ---------- Notification ----------
     function showNotification(message) {
-        const notification = document.createElement('div');
-        notification.style.cssText = `
-      position: fixed;
-      bottom: 2rem;
-      left: 2rem;
-      background: linear-gradient(135deg, #f59e0b, #fbbf24);
-      color: #000;
-      padding: 1rem 1.5rem;
-      border-radius: 0.75rem;
-      font-weight: 600;
-      z-index: 400;
-      animation: slideUp 0.3s ease-out;
-    `;
-        notification.textContent = message;
-        document.body.appendChild(notification);
-
-        setTimeout(() => {
-            notification.style.animation = 'slideDown 0.3s ease-out';
-            setTimeout(() => notification.remove(), 300);
-        }, 3000);
+        const n = document.createElement('div');
+        n.textContent = message;
+        n.style.cssText = `
+            position:fixed;bottom:2rem;left:2rem;
+            background:#fbbf24;color:#000;
+            padding:1rem 1.5rem;border-radius:.75rem;
+            font-weight:600;z-index:999;
+        `;
+        document.body.appendChild(n);
+        setTimeout(() => n.remove(), 3000);
     }
 }
 
-// Animate Counter
+// ================= COUNTER =================
 function animateCounter(elementId, targetValue) {
-    const element = document.getElementById(elementId);
-    const element2 = element.closest('.metric-amount') ? element : null;
+    const el = document.getElementById(elementId);
+    if (!el) return;
 
-    if (!element) return;
-
-    let currentValue = 0;
-    const duration = 2000; // 2 seconds
-    const increment = targetValue / (duration / 16); // 60fps
+    let value = 0;
+    const step = targetValue / 120;
 
     const interval = setInterval(() => {
-        currentValue += increment;
-        if (currentValue >= targetValue) {
-            currentValue = targetValue;
+        value += step;
+        if (value >= targetValue) {
+            value = targetValue;
             clearInterval(interval);
         }
-        element.textContent = currentValue.toLocaleString('en-IN', {
-            maximumFractionDigits: 0,
-        });
+        el.textContent = Math.floor(value).toLocaleString('en-IN');
     }, 16);
 }
-
-// Smooth scroll for internal links
-document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({ behavior: 'smooth' });
-        }
-    });
-});
-
-// Add animations for expense items on scroll
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px',
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-            entry.target.style.animation = 'slide-up 0.6s ease-out forwards';
-            observer.unobserve(entry.target);
-        }
-    });
-}, observerOptions);
-
-document.querySelectorAll('.expense-item').forEach((item) => {
-    observer.observe(item);
-});

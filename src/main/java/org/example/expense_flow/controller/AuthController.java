@@ -77,7 +77,9 @@ public class AuthController {
         }
 
         // CREATE SESSION
-        session.setAttribute("loggedInUser", user);
+        session.setAttribute("userId", user.getUserId());   // NEW (extra)
+        session.setAttribute("loggedInUser", user);         // SAME as before
+
 
         return "redirect:/dashboard";
     }
